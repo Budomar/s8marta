@@ -3,74 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>С 8 марта, Евгения! 💐</title>
+    <title>Евгения, с 8 марта! 💐</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="floating-petals"></div>
+    
     <div class="container">
-        <div class="card">
-            <div class="badge">СПП ❤️</div>
-            
-            <div class="flowers">
-                <div class="flower flower1">🌷</div>
-                <div class="flower flower2">🌹</div>
-                <div class="flower flower3">🌸</div>
-                <div class="flower flower4">🌺</div>
-                <div class="flower flower5">🌼</div>
-            </div>
-            
-            <h1 class="title">
-                <span class="for">С 8 марта,</span>
-                <span class="name">Евгения!</span>
-            </h1>
-            
-            <div class="message">
-                <p class="greeting">Наша прекрасная коллега из отдела СПП!</p>
-                <p class="main-message">
-                    В этот чудесный весенний день весь наш отдел спешит поздравить тебя 
-                    с Международным женским днём! Ты не только профессионал своего дела, 
-                    но и человек, который делает наш рабочий день светлее и радостнее.
-                </p>
-                <div class="wishes">
-                    <p>✨ Желаем тебе:</p>
-                    <ul>
-                        <li>🌸 Весеннего настроения каждый день</li>
-                        <li>💐 Океана цветов и комплиментов</li>
-                        <li>⭐ Успехов в работе и личных побед</li>
-                        <li>💖 Счастья, любви и гармонии</li>
-                        <li>🎯 Исполнения всех желаний</li>
-                    </ul>
+        <!-- Основная открытка -->
+        <div class="card" id="mainCard">
+            <div class="card__inner">
+                <div class="ribbon">
+                    <span>СПП ★</span>
                 </div>
-            </div>
-            
-            <div class="signature">
-                <p>С любовью и уважением,</p>
-                <p class="department">Твои коллеги из отдела СПП 💝</p>
-            </div>
-            
-            <button class="surprise-btn" onclick="showSurprise()">
-                <span class="btn-text">Сюрприз для Евгении</span>
-                <span class="btn-emoji">✨🎁✨</span>
-            </button>
-            
-            <div class="surprise hidden" id="surprise">
-                <div class="surprise-content">
-                    <h2>Для самой лучшей коллеги!</h2>
-                    <div class="photo-frame">
-                        <div class="photo-placeholder">
-                            🏢 👩‍💼 🌸
+                
+                <div class="flower-bouquet">
+                    <div class="flower-bloom bloom1">🌸</div>
+                    <div class="flower-bloom bloom2">🌷</div>
+                    <div class="flower-bloom bloom3">🌹</div>
+                    <div class="flower-bloom bloom4">🌺</div>
+                    <div class="flower-bloom bloom5">🌼</div>
+                    <div class="flower-bloom bloom6">💐</div>
+                </div>
+
+                <h1 class="title">
+                    <span class="title__small">С 8 марта,</span>
+                    <span class="title__name">Евгения!</span>
+                </h1>
+
+                <div class="message-card">
+                    <div class="message-card__content">
+                        <p class="message-card__greeting">Наша дорогая коллега! 💝</p>
+                        <p class="message-card__text">Ты — как весенний цветок, который расцветает в нашем отделе СПП, делая рабочие дни ярче и теплее. Твоя улыбка освещает всё вокруг, а профессионализм вдохновляет.</p>
+                        
+                        <div class="message-card__wishes">
+                            <p>Пусть в твоей жизни будет бесконечная весна:</p>
+                            <ul class="wishes-list">
+                                <li class="wishes-list__item">
+                                    <span class="wish-icon">💐</span>
+                                    <span>Море цветов и комплиментов</span>
+                                </li>
+                                <li class="wishes-list__item">
+                                    <span class="wish-icon">✨</span>
+                                    <span>Исполнение самых смелых желаний</span>
+                                </li>
+                                <li class="wishes-list__item">
+                                    <span class="wish-icon">🌸</span>
+                                    <span>Нежность и женское счастье</span>
+                                </li>
+                                <li class="wishes-list__item">
+                                    <span class="wish-icon">⭐</span>
+                                    <span>Вдохновения и новых побед</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <p class="surprise-message">
-                        Ты - наше украшение отдела СПП!<br>
-                        С праздником, Женя! 🎉
+                </div>
+
+                <div class="signature-area">
+                    <p class="signature-area__line">С любовью и восхищением,</p>
+                    <p class="signature-area__department">Твои коллеги из отдела СПП</p>
+                    <div class="signature-area__hearts">❤️ ❤️ ❤️</div>
+                </div>
+
+                <button class="magic-button" id="magicBtn">
+                    <span class="magic-button__text">Открыть волшебство</span>
+                    <span class="magic-button__icon">✨</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Сюрприз (изначально скрыт) -->
+        <div class="surprise-card hidden" id="surpriseCard">
+            <div class="surprise-card__content">
+                <div class="sparkles"></div>
+                
+                <div class="surprise-message">
+                    <h2 class="surprise-message__title">
+                        <span class="surprise-message__title-small">Для тебя,</span>
+                        <span class="surprise-message__title-name">Евгения!</span>
+                    </h2>
+                    
+                    <div class="gift-box">
+                        <div class="gift-box__lid"></div>
+                        <div class="gift-box__body">
+                            <div class="gift-box__ribbon"></div>
+                        </div>
+                    </div>
+                    
+                    <p class="surprise-message__text">
+                        Ты — наше вдохновение и украшение отдела!<br>
+                        Пусть каждый день дарит тебе радость, как этот весенний праздник!
                     </p>
-                    <div class="confetti"></div>
+                    
+                    <div class="photo-collage">
+                        <div class="photo-item photo-item--1">👩‍💼</div>
+                        <div class="photo-item photo-item--2">🌸</div>
+                        <div class="photo-item photo-item--3">💐</div>
+                        <div class="photo-item photo-item--4">✨</div>
+                        <div class="photo-item photo-item--5">💝</div>
+                    </div>
+                    
+                    <button class="close-button" id="closeBtn">
+                        <span class="close-button__text">Закрыть</span>
+                        <span class="close-button__icon">💕</span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
