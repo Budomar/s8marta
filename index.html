@@ -2,9 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Евгения, с 8 марта! 🌸</title>
+    <meta name="description" content="Поздравительная открытка для Евгении от отдела СПП">
+    <meta name="theme-color" content="#ffd1dc">
+    <meta property="og:title" content="Для Евгении с 8 марта!">
+    <meta property="og:description" content="Весеннее чудо от отдела СПП">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
 </head>
 <body>
     <!-- Прелоадер -->
@@ -12,13 +21,13 @@
         <div class="preloader__content">
             <div class="preloader__flower">🌸</div>
             <div class="preloader__text">Готовим весеннее чудо для Евгении...</div>
-            <div class="preloader__progress">
-                <div class="preloader__progress-bar"></div>
+            <div class="preloader__progress" id="preloaderProgress">
+                <div class="preloader__progress-bar" id="preloaderProgressBar"></div>
             </div>
         </div>
     </div>
 
-    <!-- Основной контент -->
+    <!-- Основной контент (скрыт до загрузки) -->
     <div class="main-content hidden" id="mainContent">
         <!-- Конверт -->
         <div class="envelope" id="envelope">
@@ -27,93 +36,203 @@
             <div class="envelope__body">
                 <div class="envelope__content">
                     <span class="envelope__label">Для самой прекрасной</span>
-                    <h1 class="envelope__name">Евгения</h1>
+                    <h1 class="envelope__name">ЕВГЕНИЯ</h1>
                     <span class="envelope__from">от отдела СПП ❤️</span>
-                    <button class="envelope__btn" id="openBtn">Открыть поздравление</button>
+                    <button class="envelope__btn" id="openEnvelopeBtn">
+                        <span>Открыть поздравление</span>
+                        <span class="envelope__arrow">↓</span>
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Открытка -->
         <div class="card hidden" id="card">
-            <div class="card__bg"></div>
+            <!-- Фоновые элементы -->
+            <div class="floating-petals" id="floatingPetals"></div>
+            <div class="magical-background" id="magicalBg"></div>
             
-            <!-- Цветы -->
-            <div class="flowers-container">
-                <div class="flower" data-id="1">🌷</div>
-                <div class="flower" data-id="2">🌹</div>
-                <div class="flower" data-id="3">🌸</div>
-                <div class="flower" data-id="4">🌺</div>
-                <div class="flower" data-id="5">🌼</div>
-                <div class="flower" data-id="6">💐</div>
-            </div>
-
-            <!-- Заголовок -->
-            <h2 class="card__title">
-                <span class="card__title-small">С 8 марта,</span>
-                <span class="card__title-name">Евгения!</span>
-            </h2>
-
-            <!-- Поздравление -->
-            <div class="message">
-                <p class="message__line">Дорогая Евгения!</p>
-                <p class="message__line">Ты - украшение нашего отдела СПП</p>
-                <p class="message__line">Твоя улыбка освещает рабочие дни</p>
-                <p class="message__line">А доброта согревает сердца</p>
-            </div>
-
-            <!-- Пожелания -->
-            <div class="wishes">
-                <h3 class="wishes__title">Мы желаем тебе:</h3>
-                <div class="wishes__grid">
-                    <div class="wish-item">
-                        <span class="wish-item__icon">🌸</span>
-                        <span>Весеннего настроения</span>
+            <div class="card__content">
+                <!-- Левая часть / Верхняя часть -->
+                <div class="card__section card__section--left">
+                    <!-- Интерактивный букет -->
+                    <div class="bouquet">
+                        <h2 class="bouquet__title">Цветы для Евгении</h2>
+                        <div class="bouquet__flowers" id="bouquetFlowers">
+                            <div class="flower" data-id="1" data-compliment="Ты - настоящий профессионал! Твои идеи вдохновляют, а решения всегда точны.">
+                                <div class="flower__emoji">🌷</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                            <div class="flower" data-id="2" data-compliment="Твоя женственность и элегантность делают наш офис прекраснее. Ты - его главное украшение!">
+                                <div class="flower__emoji">🌹</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                            <div class="flower" data-id="3" data-compliment="Твоя доброта и отзывчивость согревают сердца коллег. Спасибо, что ты всегда готова помочь!">
+                                <div class="flower__emoji">🌸</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                            <div class="flower" data-id="4" data-compliment="Твой оптимизм заразителен! Даже в сложные дни ты умеешь найти повод для улыбки.">
+                                <div class="flower__emoji">🌺</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                            <div class="flower" data-id="5" data-compliment="Ты - душа нашей команды. С тобой легко и радостно работать, ты создаёшь особую атмосферу.">
+                                <div class="flower__emoji">🌼</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                            <div class="flower" data-id="6" data-compliment="Ты уникальна! Сочетаешь в себе мудрость и лёгкость, серьёзность и очарование.">
+                                <div class="flower__emoji">💐</div>
+                                <div class="flower__glow"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="wish-item">
-                        <span class="wish-item__icon">🌷</span>
-                        <span>Море цветов</span>
+
+                    <!-- Заголовок -->
+                    <div class="title-block">
+                        <span class="title-block__small">С 8 марта,</span>
+                        <h2 class="title-block__name">Евгения!</h2>
                     </div>
-                    <div class="wish-item">
-                        <span class="wish-item__icon">✨</span>
-                        <span>Исполнения желаний</span>
+
+                    <!-- Основное поздравление -->
+                    <div class="greeting">
+                        <p class="greeting__line">Дорогая Евгения!</p>
+                        <p class="greeting__line">В этот день, когда весна раскрашивает мир нежными красками, мы хотим сказать тебе самое главное...</p>
+                        <p class="greeting__line">Ты делаешь наш отдел особенным. Не только своим профессионализмом, но и своей удивительной способностью создавать уют и тепло там, где ты есть.</p>
+                        <p class="greeting__line">Твой смех звучит как весенняя капель, а улыбка освещает даже самый пасмурный день.</p>
                     </div>
-                    <div class="wish-item">
-                        <span class="wish-item__icon">💖</span>
-                        <span>Счастья и любви</span>
+                </div>
+
+                <!-- Правая часть / Нижняя часть -->
+                <div class="card__section card__section--right">
+                    <!-- Прогресс-бар чувств -->
+                    <div class="progress-block">
+                        <div class="progress-block__text" id="progressText">Евгения, вы с нами?</div>
+                        <div class="progress-block__bar">
+                            <div class="progress-block__fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                        <div class="progress-block__steps">
+                            <span class="progress-step" data-step="1">🌷</span>
+                            <span class="progress-step" data-step="2">🌹</span>
+                            <span class="progress-step" data-step="3">🌸</span>
+                            <span class="progress-step" data-step="4">🌺</span>
+                            <span class="progress-step" data-step="5">🌼</span>
+                            <span class="progress-step" data-step="6">💐</span>
+                        </div>
+                    </div>
+
+                    <!-- Список пожеланий -->
+                    <div class="wishes">
+                        <h3 class="wishes__title">Мы желаем тебе:</h3>
+                        <div class="wishes__grid">
+                            <div class="wish-item">
+                                <span class="wish-item__icon">🌸</span>
+                                <span class="wish-item__text">Бесконечной весны в душе</span>
+                            </div>
+                            <div class="wish-item">
+                                <span class="wish-item__icon">🌷</span>
+                                <span class="wish-item__text">Море цветов и комплиментов</span>
+                            </div>
+                            <div class="wish-item">
+                                <span class="wish-item__icon">✨</span>
+                                <span class="wish-item__text">Исполнения желаний</span>
+                            </div>
+                            <div class="wish-item">
+                                <span class="wish-item__icon">💖</span>
+                                <span class="wish-item__text">Женского счастья</span>
+                            </div>
+                            <div class="wish-item">
+                                <span class="wish-item__icon">⭐</span>
+                                <span class="wish-item__text">Профессиональных побед</span>
+                            </div>
+                            <div class="wish-item">
+                                <span class="wish-item__icon">🌟</span>
+                                <span class="wish-item__text">Гармонии и вдохновения</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Галерея воспоминаний -->
+                    <div class="gallery">
+                        <h3 class="gallery__title">Наши воспоминания</h3>
+                        <div class="gallery__grid">
+                            <div class="memory-card" data-memory="Наш лидер и вдохновитель">
+                                <div class="memory-card__front">👩‍💼</div>
+                                <div class="memory-card__back">Наш лидер</div>
+                            </div>
+                            <div class="memory-card" data-memory="Гуру отчётов и таблиц">
+                                <div class="memory-card__front">📊</div>
+                                <div class="memory-card__back">Гуру отчётов</div>
+                            </div>
+                            <div class="memory-card" data-memory="Кофе-брейк с вами - праздник">
+                                <div class="memory-card__front">☕</div>
+                                <div class="memory-card__back">Кофе-брейк</div>
+                            </div>
+                            <div class="memory-card" data-memory="Королева корпоративов">
+                                <div class="memory-card__front">🎉</div>
+                                <div class="memory-card__back">Королева</div>
+                            </div>
+                            <div class="memory-card" data-memory="Просто вы - и этого достаточно">
+                                <div class="memory-card__front">💝</div>
+                                <div class="memory-card__back">Просто вы</div>
+                            </div>
+                            <div class="memory-card" data-memory="Наша звёздочка">
+                                <div class="memory-card__front">✨</div>
+                                <div class="memory-card__back">Звёздочка</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Подпись -->
+                    <div class="signature">
+                        <p class="signature__line">С любовью и восхищением,</p>
+                        <p class="signature__names">Олег • Андрей • Саша •  Ярослав</p>
+                        <p class="signature__dept">Отдел СПП <span class="signature__hearts">❤️ ❤️ ❤️</span></p>
                     </div>
                 </div>
             </div>
 
-            <!-- Подпись -->
-            <div class="signature">
-                <p>С любовью,</p>
-                <p class="signature__dept">Отдел СПП ❤️</p>
+            <!-- Интерактивная панель -->
+            <div class="interactive-panel">
+                <div class="magic-orb" id="magicOrb">
+                    <div class="magic-orb__inner">
+                        <span class="magic-orb__emoji">✨</span>
+                        <span class="magic-orb__text">Волшебство</span>
+                    </div>
+                </div>
+                
+                <button class="rain-btn" id="rainBtn">
+                    <span class="rain-btn__icon">🌸</span>
+                    <span class="rain-btn__text">Лепестковый дождь</span>
+                </button>
+                
+                <div class="counter" id="flowerCounter">
+                    <span class="counter__value" id="counterValue">0</span>
+                    <span class="counter__total">/6</span>
+                </div>
             </div>
 
-            <!-- Кнопка сюрприза -->
-            <button class="surprise-btn" id="surpriseBtn">
-                <span>Сюрприз</span>
-                <span class="surprise-btn__icon">✨</span>
-            </button>
-        </div>
+            <!-- Облачко с комплиментом -->
+            <div class="compliment-popup hidden" id="complimentPopup">
+                <div class="compliment-popup__content" id="complimentText"></div>
+            </div>
 
-        <!-- Секретное окно -->
-        <div class="secret-modal hidden" id="secretModal">
-            <div class="secret-modal__content">
-                <h3>💝 Секретное послание 💝</h3>
-                <p>Евгения, вы нашли все цветы! Получите свой подарок:</p>
-                <div class="secret-modal__flowers">
-                    <span>🌷</span>
-                    <span>🌹</span>
-                    <span>🌸</span>
-                    <span>🌺</span>
-                    <span>🌼</span>
+            <!-- Секретное послание -->
+            <div class="secret-modal hidden" id="secretModal">
+                <div class="secret-modal__overlay"></div>
+                <div class="secret-modal__content">
+                    <button class="secret-modal__close" id="closeSecretBtn">×</button>
+                    <h3 class="secret-modal__title">💝 СЕКРЕТНОЕ ПОСЛАНИЕ 💝</h3>
+                    <p class="secret-modal__text">Евгения! Ты собрала все цветы, а значит, заслужила самый главный секрет...</p>
+                    <p class="secret-modal__text">Мы хотим сказать тебе по-настоящему важное: ты - не просто отличный сотрудник. Ты - человек, с которым хочется работать, делиться идеями, пить кофе на перерывах, радоваться победам и вместе идти вперёд.</p>
+                    <p class="secret-modal__text secret-modal__text--highlight">Спасибо, что ты есть!</p>
+                    <div class="secret-modal__flowers">💐 💐 💐</div>
+                    <p class="secret-modal__signature">Твой отдел СПП</p>
                 </div>
-                <button class="secret-modal__btn" id="closeSecretBtn">Спасибо!</button>
             </div>
         </div>
     </div>
+
+    <!-- Подсказка (динамическая) -->
+    <div class="hint-container" id="hintContainer"></div>
 
     <script src="script.js"></script>
 </body>
