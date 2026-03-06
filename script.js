@@ -1,303 +1,233 @@
-// Ждем загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🌸 Открытка для Евгении загружена!');
-    
-    // Создаем плавающие лепестки
-    createFloatingPetals();
-    
-    // Эффект появления элементов
-    animateOnScroll();
+    console.log('🌸 Открытка загружается...');
+    initPreloader();
 });
 
-// Создание плавающих лепестков
-function createFloatingPetals() {
-    const petalsContainer = document.querySelector('.floating-petals');
-    const petalEmojis = ['🌸', '🌷', '🌹', '🌺', '🌼', '💐', '✨', '💝'];
+// Состояние
+let collectedFlowers = 0;
+const totalFlowers = 6;
+
+// Инициализация прелоадера
+function initPreloader() {
+    setTimeout(() => {
+        document.getElementById('preloader').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('preloader').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+        }, 1000);
+    }, 2000);
+}
+
+// Открытие конверта
+document.getElementById('openBtn').addEventListener('click', () => {
+    const topFlap = document.querySelector('.envelope__flap--top');
+    const bottomFlap = document.querySelector('.envelope__flap--bottom');
+    
+    topFlap.style.transform = 'rotateX(180deg)';
+    bottomFlap.style.transform = 'rotateX(-180deg)';
+    
+    setTimeout(() => {
+        document.getElementById('envelope').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('envelope').classList.add('hidden');
+            document.getElementById('card').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('card').classList.add('visible');
+                showHint('Нажимайте на цветы, чтобы собрать букет! 🌸');
+            }, 100);
+        }, 500);
+    }, 1000);
+});
+
+// Сбор цветов
+document.querySelectorAll('.flower').forEach(flower => {
+    flower.addEventListener('click', function() {
+        if (!this.classList.contains('collected')) {
+            this.classList.add('collected');
+            collectedFlowers++;
+            
+            // Создаем искры
+            createSparkles(this.getBoundingClientRect());
+            
+            // Показываем прогресс
+            if (collectedFlowers < totalFlowers) {
+                showHint(`Собрано ${collectedFlowers} из ${totalFlowers} цветов! 🌷`);
+            }
+            
+            // Если собрали все цветы
+            if (collectedFlowers === totalFlowers) {
+                setTimeout(() => {
+                    showSecretModal();
+                }, 500);
+            }
+        }
+    });
+});
+
+// Кнопка сюрприза
+document.getElementById('surpriseBtn').addEventListener('click', () => {
+    createPetalRain();
+    createConfetti();
+    showHint('🌸 Лепестковый дождь! 🌸');
+    
+    // Анимация всех цветов
+    document.querySelectorAll('.flower').forEach(flower => {
+        flower.style.animation = 'none';
+        flower.offsetHeight;
+        flower.style.animation = 'float 3s infinite';
+    });
+});
+
+// Закрытие секретного окна
+document.getElementById('closeSecretBtn').addEventListener('click', () => {
+    document.getElementById('secretModal').classList.remove('visible');
+    createConfetti(100);
+    showHint('С праздником, Евгения! 💝');
+});
+
+// Показать секретное окно
+function showSecretModal() {
+    document.getElementById('secretModal').classList.add('visible');
+    createConfetti(50);
+}
+
+// Создание конфетти
+function createConfetti(count = 50) {
+    const colors = ['#667eea', '#764ba2', '#ff9a9e', '#fad0c4', '#a8edea', '#fed6e3'];
+    
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            const size = Math.random() * 10 + 5;
+            const left = Math.random() * 100;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            confetti.style.cssText = `
+                left: ${left}%;
+                top: -20px;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                animation-delay: ${Math.random() * 2}s;
+            `;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+    }
+}
+
+// Создание лепесткового дождя
+function createPetalRain() {
+    const petals = ['🌸', '🌷', '🌹', '🌺', '🌼', '💐'];
     
     for (let i = 0; i < 30; i++) {
         setTimeout(() => {
             const petal = document.createElement('div');
             petal.className = 'petal';
-            petal.innerHTML = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+            petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+            petal.style.fontSize = Math.random() * 20 + 20 + 'px';
+            document.body.appendChild(petal);
             
-            const size = Math.random() * 20 + 15;
-            const left = Math.random() * 100;
-            const animationDuration = Math.random() * 10 + 10;
-            const delay = Math.random() * 5;
-            
-            petal.style.cssText = `
-                position: fixed;
-                left: ${left}%;
-                top: -50px;
-                font-size: ${size}px;
-                opacity: ${Math.random() * 0.3 + 0.2};
-                animation: floatPetals ${animationDuration}s linear ${delay}s infinite;
-                z-index: 0;
-                pointer-events: none;
-                transform: rotate(${Math.random() * 360}deg);
-            `;
-            
-            petalsContainer.appendChild(petal);
-        }, i * 200);
+            setTimeout(() => petal.remove(), 5000);
+        }, i * 50);
     }
 }
 
-// Кнопка "Открыть волшебство"
-document.getElementById('magicBtn').addEventListener('click', () => {
-    const mainCard = document.getElementById('mainCard');
-    const surpriseCard = document.getElementById('surpriseCard');
-    
-    // Анимация исчезновения основной карточки
-    mainCard.style.transform = 'scale(0.8)';
-    mainCard.style.opacity = '0';
-    
-    setTimeout(() => {
-        mainCard.style.display = 'none';
-        surpriseCard.classList.remove('hidden');
-        
-        // Запускаем конфетти
-        createConfetti();
-        
-        // Запускаем волшебные искры
-        createSparkles();
-        
-        // Показываем подарочную анимацию
-        animateGiftBox();
-    }, 300);
-});
-
-// Кнопка закрытия сюрприза
-document.getElementById('closeBtn').addEventListener('click', () => {
-    const mainCard = document.getElementById('mainCard');
-    const surpriseCard = document.getElementById('surpriseCard');
-    
-    surpriseCard.classList.add('hidden');
-    mainCard.style.display = 'block';
-    
-    setTimeout(() => {
-        mainCard.style.transform = 'scale(1)';
-        mainCard.style.opacity = '1';
-    }, 50);
-});
-
-// Создание конфетти
-function createConfetti() {
-    const colors = [
-        '#ff8da1', '#ffb6c1', '#ffe4e9', '#f7cac9', 
-        '#e2d1ff', '#c5e0d8', '#fed7b0', '#e6a8b0'
-    ];
-    
-    const confettiCount = 150;
-    
-    for (let i = 0; i < confettiCount; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            
-            const size = Math.random() * 15 + 8;
-            const left = Math.random() * 100;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const rotation = Math.random() * 360;
-            const duration = Math.random() * 3 + 2;
-            
-            confetti.style.cssText = `
-                position: fixed;
-                left: ${left}%;
-                top: -30px;
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                transform: rotate(${rotation}deg);
-                box-shadow: 0 0 10px rgba(255, 141, 161, 0.5);
-                animation: confettiFall ${duration}s ease-in forwards;
-                z-index: 10000;
-                pointer-events: none;
-            `;
-            
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => {
-                confetti.remove();
-            }, duration * 1000);
-        }, i * 20);
-    }
-    
-    // Добавляем стили для конфетти, если их нет
-    if (!document.getElementById('confetti-style')) {
-        const style = document.createElement('style');
-        style.id = 'confetti-style';
-        style.textContent = `
-            @keyframes confettiFall {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(100vh) rotate(720deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Создание волшебных искр
-function createSparkles() {
-    const sparkleCount = 50;
-    const surpriseCard = document.querySelector('.surprise-card');
-    
-    for (let i = 0; i < sparkleCount; i++) {
+// Создание искр
+function createSparkles(rect) {
+    for (let i = 0; i < 10; i++) {
         setTimeout(() => {
             const sparkle = document.createElement('div');
-            sparkle.innerHTML = ['✨', '💫', '⭐', '🌟'][Math.floor(Math.random() * 4)];
-            
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
-            const size = Math.random() * 20 + 10;
-            
+            sparkle.textContent = '✨';
             sparkle.style.cssText = `
-                position: absolute;
-                left: ${x}%;
-                top: ${y}%;
-                font-size: ${size}px;
-                animation: sparklePop 1s ease-out forwards;
+                position: fixed;
+                left: ${rect.left + Math.random() * rect.width}px;
+                top: ${rect.top + Math.random() * rect.height}px;
+                font-size: ${Math.random() * 20 + 10}px;
+                animation: sparklePop 0.5s ease-out forwards;
                 pointer-events: none;
-                z-index: 10001;
+                z-index: 10000;
             `;
+            document.body.appendChild(sparkle);
             
-            surpriseCard.appendChild(sparkle);
-            
-            setTimeout(() => {
-                sparkle.remove();
-            }, 1000);
+            setTimeout(() => sparkle.remove(), 500);
         }, i * 30);
     }
-    
-    // Добавляем стили для искр
-    if (!document.getElementById('sparkle-style')) {
-        const style = document.createElement('style');
-        style.id = 'sparkle-style';
-        style.textContent = `
-            @keyframes sparklePop {
-                0% {
-                    transform: scale(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: scale(2) rotate(180deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
 }
 
-// Анимация подарочной коробки
-function animateGiftBox() {
-    const giftBox = document.querySelector('.gift-box');
-    const lid = document.querySelector('.gift-box__lid');
+// Показать подсказку
+function showHint(text) {
+    const hint = document.createElement('div');
+    hint.className = 'hint';
+    hint.textContent = text;
+    document.body.appendChild(hint);
     
-    giftBox.style.animation = 'giftBoxShake 0.5s ease-in-out';
-    
-    setTimeout(() => {
-        lid.style.transform = 'rotate(-5deg) translateY(-5px)';
-        
-        setTimeout(() => {
-            lid.style.transform = 'rotate(5deg) translateY(-5px)';
-            
-            setTimeout(() => {
-                lid.style.transform = 'rotate(0) translateY(0)';
-                giftBox.style.animation = 'float 3s ease-in-out infinite';
-            }, 200);
-        }, 200);
-    }, 250);
-    
-    if (!document.getElementById('giftbox-style')) {
-        const style = document.createElement('style');
-        style.id = 'giftbox-style';
-        style.textContent = `
-            @keyframes giftBoxShake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
-            }
-        `;
-        document.head.appendChild(style);
-    }
+    setTimeout(() => hint.remove(), 3000);
 }
 
-// Анимация при скролле (для красоты)
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.wishes-list__item, .flower-bloom, .photo-item');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'scale(1) translateY(0)';
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'scale(0.8) translateY(20px)';
-        element.style.transition = 'all 0.5s ease';
-        observer.observe(element);
-    });
-}
-
-// Эффект мерцания для названия отдела
-setInterval(() => {
-    const hearts = document.querySelector('.signature-area__hearts');
-    if (hearts) {
-        hearts.style.opacity = '0.8';
-        setTimeout(() => {
-            hearts.style.opacity = '1';
-        }, 200);
+// Добавляем стили для анимаций
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes sparklePop {
+        0% {
+            transform: scale(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(2) rotate(180deg);
+            opacity: 0;
+        }
     }
-}, 2000);
+`;
+document.head.appendChild(style);
 
-// Пасхалка: нажмите клавишу J для сюрприза
+// Пасхалка: нажмите клавишу S для сюрприза
 document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'j') {
-        document.getElementById('magicBtn').click();
+    if (e.key.toLowerCase() === 's') {
+        document.getElementById('surpriseBtn').click();
+    }
+    if (e.key.toLowerCase() === 'c') {
+        if (collectedFlowers === totalFlowers) {
+            showSecretModal();
+        }
     }
 });
 
-// Добавляем интерактивности цветам
-document.querySelectorAll('.flower-bloom').forEach((flower, index) => {
-    flower.addEventListener('mouseenter', () => {
-        flower.style.transform = 'scale(1.3) rotate(10deg)';
-        
-        // Создаем маленькие искры при наведении
-        for (let i = 0; i < 3; i++) {
-            setTimeout(() => {
-                const spark = document.createElement('div');
-                spark.innerHTML = '✨';
-                spark.style.cssText = `
-                    position: fixed;
-                    left: ${event.clientX}px;
-                    top: ${event.clientY}px;
-                    font-size: 15px;
-                    animation: sparklePop 0.5s ease-out forwards;
-                    pointer-events: none;
-                    z-index: 1000;
-                `;
-                document.body.appendChild(spark);
-                
-                setTimeout(() => spark.remove(), 500);
-            }, i * 50);
+// Эффект при наведении на цветы
+document.querySelectorAll('.flower').forEach(flower => {
+    flower.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.3) rotate(10deg)';
+    });
+    
+    flower.addEventListener('mouseleave', function() {
+        if (!this.classList.contains('collected')) {
+            this.style.transform = '';
         }
     });
-    
-    flower.addEventListener('mouseleave', () => {
-        flower.style.transform = '';
+});
+
+// Анимация появления текста
+document.querySelectorAll('.message__line').forEach((line, index) => {
+    line.style.animation = `slideIn 0.5s forwards ${index * 0.2 + 0.2}s`;
+});
+
+// Добавляем интерактивности пожеланиям
+document.querySelectorAll('.wish-item').forEach(item => {
+    item.addEventListener('click', function() {
+        this.style.backgroundColor = '#f0f5ff';
+        setTimeout(() => {
+            this.style.backgroundColor = '';
+        }, 200);
     });
 });
 
-// Приветственное сообщение
+// Приветствие в консоли
 console.log('🌸 С 8 марта, Евгения! 🌸');
-console.log('💝 Открытка создана с любовь для вас!');
+console.log('💝 Открытка создана специально для вас!');
